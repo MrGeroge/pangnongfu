@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+       <import resource="classpath:daos.xml"/>
+
+       <bean id="accountService" class="com.pangnongfu.server.bal.service.AccountServiceImpl">
+              <property name="accountDao" ref="accountDao"/>
+              <property name="accountDetailDao" ref="accountDetailDao"/>
+       </bean>
+
+       <bean id="socialService" class="com.pangnongfu.server.bal.service.SocialServiceImpl">
+              <property name="accountDao" ref="accountDao"/>
+              <property name="accountDetailDao" ref="accountDetailDao"/>
+              <property name="relationDao" ref="relationDao"/>
+       </bean>
+
+       <bean id="statusService" class="com.pangnongfu.server.bal.service.StatusServiceImpl">
+              <property name="accountDao" ref="accountDao"/>
+              <property name="accountDetailDao" ref="accountDetailDao"/>
+              <property name="statusDao" ref="statusDao"/>
+              <property name="statusLoveDao" ref="statusLoveDao"/>
+              <property name="statusCommentDao" ref="statusCommentDao"/>
+              <property name="statusCollectDao" ref="statusCollectDao"/>
+              <property name="statusCategoryDao" ref="statusCategoryDao"/>
+              <property name="statusImageDao" ref="statusImageDao"/>
+       </bean>
+</beans>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/data/jpa
+	http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+	http://www.springframework.org/schema/jdbc
+   http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd">
+    <cache:annotation-driven cache-manager="cacheManager"/>
+    <jpa:repositories base-package="com.pangnongfu.server.dal.api"/>
+
+    <!--
+    本地内存缓存配置缓存管理器
+    -->
+    <bean id="cacheManager" class="com.pangnongfu.server.dal.memory.ConcurrentMapCacheManager" >
+        <property name="cacheNames">
+            <list>
+                <value>defaultCache</value>
+            </list>
+        </property>
+        <!--对应于public ConcurrentMapCacheManager(long expireTime, long maximumSize) -->
+        <constructor-arg index="0" value="1800" />
+        <constructor-arg index="1" value="5000" />
+    </bean>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <!-- 数据库基本信息配置 -->
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/pangnongfu" />
+        <property name="username" value="root" />
+        <property name="password" value="" />
+        <!-- 初始化连接数量 -->
+        <property name="initialSize" value="30" />
+        <!-- 最大并发连接数 -->
+        <property name="maxActive" value="150" />
+        <!-- 最小空闲连接数 -->
+        <property name="minIdle" value="5" />
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000" />
+        <!-- 超过时间限制是否回收 -->
+        <property name="removeAbandoned" value="true" />
+        <!-- 超过时间限制多长； -->
+        <property name="removeAbandonedTimeout" value="180" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <!-- 用来检测连接是否有效的sql，要求是一个查询语句-->
+        <property name="validationQuery" value="SELECT 1 FROM DUAL" />
+        <!-- 申请连接的时候检测 -->
+        <property name="testWhileIdle" value="true" />
+        <!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+        <property name="testOnBorrow" value="false" />
+        <!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能  -->
+        <property name="testOnReturn" value="false" />
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="50" />
+        <!--属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：
+                监控统计用的filter:stat
+                日志用的filter:log4j
+               防御SQL注入的filter:wall -->
+        <property name="filters" value="stat" />
+    </bean>
+
+    <bean id="vendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="generateDdl" value="true"/>
+        <property name="showSql" value="true"/>
+    </bean>
+
+    <bean id="loadTimeWeaver" class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter" ref="vendorAdapter"/>
+        <property name="packagesToScan" value="com.pangnongfu.server.dal.po"/>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+        <property name="loadTimeWeaver" ref="loadTimeWeaver"/>
+    </bean>
+
+
+
+
+
+</beans>
+

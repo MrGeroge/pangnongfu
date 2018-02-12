@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-cn">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>WEB API Debug</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+</head>
+<body>
+    <div class="container">
+        <h1>Hint:正式发布请去掉本页</h1>
+        <hr/>
+        <h1>登陆/注册</h1>
+        <div class="form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username"/>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" class="form-control" id="password"/>
+            </div>
+            <button class="btn btn-default" id="loginBtn">登陆</button>
+            <button class="btn btn-default" id="registerBtn">注册</button>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">服务器返回JSON字符串</div>
+            <div class="panel-body" id="loginResult">
+
+            </div>
+        </div>
+        <hr/>
+        <input type="text"  class="form-control" id="token"/>
+        <hr/>
+        <h1>发布测试</h1>
+        <div class="form">
+            <div class="form-group">
+                <textarea class="form-control" id="newStatus"></textarea>
+            </div>
+            <button class="btn btn-default" id="addStatus">Submit</button>
+        </div>
+
+
+    </div>
+
+    <hr/>
+        <h1>服务器通知</h1>
+        <ul id="notification">
+        </ul>
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var NotificationServer = {};
+
+        NotificationServer.socket = null;
+
+        NotificationServer.connect = (function(host) {
+            if ('WebSocket' in window) {
+                NotificationServer.socket = new WebSocket(host);
+            } else if ('MozWebSocket' in window) {
+                NotificationServer.socket = new MozWebSocket(host);
+            } else {
+                Console.log('Error: WebSocket is not supported by this browser.');
+                return;
+            }
+
+            NotificationServer.socket.onopen = function () {
+                Console.log('Info: WebSocket connection opened.');
+            };
+
+            NotificationServer.socket.onclose = function () {
+                Console.log('Info: WebSocket closed.');
+            };
+
+            NotificationServer.socket.onmessage = function (message) {
+                Console.log(message.data);
+            };
+        });
+
+        NotificationServer.initialize = function() {
+            if (window.location.protocol == 'http:') {
+                NotificationServer.connect('ws://localhost:8080/client/notification?1');
+            } else {
+                NotificationServer.connect('wss://localhost:8080/client/notification?1');
+            }
+        };
+
+        var Console = {};
+
+        var console = document.getElementById('notification');
+
+        Console.log = (function(message) {
+            var li = document.createElement('li');
+            li.innerHTML = message;
+            console.appendChild(li);
+        });
+
+        NotificationServer.initialize();
+
+        $("#loginBtn").click(function(){
+            $.ajax({
+                type:"POST",
+                url:"http://localhost:8080/account/login",
+                dataType:"json",
+                data:{username:$("#username").val(),password:$("#password").val(),longitude:"22.22",latitude:"33.22"},
+                success:function(data){
+                    $("#loginResult").html(JSON.stringify(data));
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown){
+                    alert(textStatus+","+errorThrown);
+                }
+            });
+        });
+
+        $("#registerBtn").click(function(){
+            $.ajax({
+                type:"POST",
+                url:"http://localhost:8080/account/register",
+                dataType:"json",
+                data:{username:$("#username").val(),password:$("#password").val()},
+                success:function(data){
+                    $("#loginResult").html(JSON.stringify(data));
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown){
+                    alert(textStatus+","+errorThrown);
+                }
+            });
+        });
+
+        $("#addStatus").click(function(){
+            $.ajax({
+                type:"POST",
+                url:"http://localhost:8080/status/add?token="+$("#token").val(),
+                dataType:"json",
+                contentType:"application/json",
+                data:$("#newStatus").val()
+            });
+        });
+    </script>
+</body>
+</html>

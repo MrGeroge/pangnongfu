@@ -1,0 +1,272 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.pangnongfu</groupId>
+  <artifactId>server</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <modules>
+    <module>server-web</module>
+    <module>server-dal</module>
+    <module>server-bal</module>
+  </modules>
+  <packaging>pom</packaging>
+
+  <name>server</name>
+
+  <properties>
+    <spring.version>4.1.6.RELEASE</spring.version>
+    <spring.data.version>1.8.0.RELEASE</spring.data.version>
+    <hibernate.version>4.3.8.Final</hibernate.version>
+    <mysql.connector.version>5.1.35</mysql.connector.version>
+    <servlet.version>3.1.0</servlet.version>
+    <javaee.version>7.0</javaee.version>
+    <jackson.version>2.5.0</jackson.version>
+    <json.version>20140107</json.version>
+    <codec.version>1.10</codec.version>
+    <thymeleaf.version>2.1.4.RELEASE</thymeleaf.version>
+    <junit.version>4.9</junit.version>
+    <hsql.version>1.8.0.7</hsql.version>
+    <easymock.version>3.3.1</easymock.version>
+    <slf4j.version>1.7.2</slf4j.version>
+    <maven.compiler.version>2.5.1</maven.compiler.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.source.version>1.7</java.source.version>
+    <java.target.version>1.7</java.target.version>
+    <druid.version>1.0.15</druid.version>
+    <oss.version>2.0.6</oss.version>
+    <cache.version>18.0</cache.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- ================================================= -->
+      <!-- Spring-framework-->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-websocket</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-messaging</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-jpa</artifactId>
+        <version>${spring.data.version}</version>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- hibernate orm framework-->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>${hibernate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <version>${hibernate.version}</version>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- mysql-connetor-->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql.connector.version}</version>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- thymeleaf :template engine-->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>org.thymeleaf</groupId>
+        <artifactId>thymeleaf</artifactId>
+        <version>${thymeleaf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.thymeleaf</groupId>
+        <artifactId>thymeleaf-spring4</artifactId>
+        <version>${thymeleaf.version}</version>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- jackson: support for object json Serialization -->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+
+      <!-- ================================================= -->
+      <!-- java json : generate json string -->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>${json.version}</version>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- apache codec : decode base64 -->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${codec.version}</version>
+      </dependency>
+      <!-- ================================================= -->
+      <!-- servlet-api: just for compile -->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>${servlet.version}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- javaee-api: just for compile -->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>javax</groupId>
+        <artifactId>javaee-api</artifactId>
+        <version>${javaee.version}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- slf4j-log4j -->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- junit: unit test base tools-->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- 数据库采用hsqldb内存，便于测试 -->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>org.hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>2.3.3</version>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- easymock: 做分层的测试-->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>org.easymock</groupId>
+        <artifactId>easymock</artifactId>
+        <version>${easymock.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <!-- ================================================= -->
+      <!-- druid数据库连接池-->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid</artifactId>
+        <version>${druid.version}</version>
+      </dependency>
+
+      <!-- ================================================= -->
+      <!-- Aliyun OSS SDK -->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>com.aliyun.oss</groupId>
+        <artifactId>aliyun-sdk-oss</artifactId>
+        <version>${oss.version}</version>
+      </dependency>
+      <!-- ================================================= -->
+      <!--Cache  -->
+      <!-- ================================================= -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${cache.version}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.version}</version>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <source>${java.source.version}</source>
+            <target>${java.target.version}</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
